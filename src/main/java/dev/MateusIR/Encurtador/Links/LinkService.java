@@ -20,13 +20,13 @@ public class LinkService {
     public Link encurtaUrl(String url){
         Link link = new Link();
         link.setUrl(url);
-        link.setUrl_short(geraUrlAleatoria());
-        link.setUrl_criadaEm(LocalDateTime.now());
+        link.setUrlShort(geraUrlAleatoria());
+        link.setUrlCriadaEm(LocalDateTime.now());
         return linkRepository.save(link);
     }
-    public Link getLinkShort(String url_short){
+    public Link getLinkShort(String urlShort){
         try {
-            return linkRepository.findByUrl_short(url_short);
+            return linkRepository.findByUrlShort(urlShort);
         }catch (Exception e){
             throw new RuntimeException("URL não encontrada", e);
         }

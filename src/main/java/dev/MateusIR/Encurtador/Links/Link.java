@@ -13,14 +13,14 @@ public class Link {
     private Long id;
 
     private String url;
-    private String url_short;
-    private LocalDateTime url_criadaEm;
+    private String urlShort;
+    private LocalDateTime urlCriadaEm;
 
     public Link(Long id, String url, String url_short, LocalDateTime url_criadaEm) {
         this.id = id;
         this.url = url;
-        this.url_short = url_short;
-        this.url_criadaEm = url_criadaEm;
+        this.urlShort = url_short;
+        this.urlCriadaEm = url_criadaEm;
     }
     public Link(){}
 
@@ -40,20 +40,20 @@ public class Link {
         this.url = url;
     }
 
-    public String getUrl_short() {
-        return url_short;
+    public String getUrlShort() {
+        return urlShort;
     }
 
-    public void setUrl_short(String url_short) {
-        this.url_short = url_short;
+    public void setUrlShort(String urlShort) {
+        this.urlShort = urlShort;
     }
 
-    public LocalDateTime getUrl_criadaEm() {
-        return url_criadaEm;
+    public LocalDateTime getUrlCriadaEm() {
+        return urlCriadaEm;
     }
 
-    public void setUrl_criadaEm(LocalDateTime url_criadaEm) {
-        this.url_criadaEm = url_criadaEm;
+    public void setUrlCriadaEm(LocalDateTime urlCriadaEm) {
+        this.urlCriadaEm = urlCriadaEm;
     }
 }
 
