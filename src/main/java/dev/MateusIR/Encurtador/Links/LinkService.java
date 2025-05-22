@@ -1,9 +1,11 @@
 package dev.MateusIR.Encurtador.Links;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class LinkService {
@@ -31,4 +33,12 @@ public class LinkService {
             throw new RuntimeException("URL não encontrada", e);
         }
     }
+
+    @Scheduled(fixedRate = 86400000)
+    public void deletarLinksExpirados() {
+        LocalDateTime limite = LocalDateTime.now().minusWeeks(1);
+        List<Link> expirados = linkRepository.findAllByUrlCriadaEmBefore(limite);
+        linkRepository.deleteAll(expirados);
+    }
+
 }
