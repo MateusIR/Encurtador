@@ -1,12 +1,12 @@
 package dev.MateusIR.Encurtador.Links;
 
-import jakarta.servlet.http.HttpServletRequest;
+
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.imageio.IIOException;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -23,7 +23,9 @@ public class LinkController {
     @PostMapping("/encurtador")
     public ResponseEntity<LinkResponse> gerarUrlShort(@RequestBody Map<String,String> request){
         String url = request.get("url");
-        Link link = linkService.encurtaUrl(url);
+        String customUrl = request.get("urlCustom");
+
+        Link link = linkService.encurtaUrl(url,customUrl);
 
         String geraRedirecionamentoUrl = "http://localhost:8080/r/" + link.getUrlShort();
 

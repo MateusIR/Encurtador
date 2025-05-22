@@ -19,10 +19,16 @@ public class LinkService {
     return RandomStringUtils.randomAlphanumeric(8,10);
     }
 
-    public Link encurtaUrl(String url){
+    public Link encurtaUrl(String url, String customUrl){
         Link link = new Link();
         link.setUrl(url);
-        link.setUrlShort(geraUrlAleatoria());
+
+        if (customUrl != null && customUrl.length() >= 6 && customUrl.length() <= 32 && !customUrl.contains(" ")) {
+            link.setUrlShort(customUrl);
+        } else {
+            link.setUrlShort(geraUrlAleatoria());
+        }
+
         link.setUrlCriadaEm(LocalDateTime.now());
         return linkRepository.save(link);
     }
