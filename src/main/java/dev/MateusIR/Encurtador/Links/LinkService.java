@@ -24,7 +24,7 @@ public class LinkService {
         link.setUrlCriadaEm(LocalDateTime.now());
         return linkRepository.save(link);
     }
-    public Link getLinkShort(String urlShort){
+    public Link getOriginal(String urlShort){
         try {
             return linkRepository.findByUrlShort(urlShort);
         }catch (Exception e){

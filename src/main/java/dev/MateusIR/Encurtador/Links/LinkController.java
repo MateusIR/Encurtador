@@ -1,11 +1,13 @@
 package dev.MateusIR.Encurtador.Links;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.IIOException;
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -28,6 +30,19 @@ public class LinkController {
         LinkResponse response = new LinkResponse(link.getId(),link.getUrl(),geraRedirecionamentoUrl,link.getUrlCriadaEm());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+
+    @GetMapping("/r/{urlShort}")
+    public void RedirecionarLink(@PathVariable String urlShort, HttpServletResponse response) throws IOException {
+        Link link = linkService.getOriginal(urlShort);
+
+        if (link != null){
+            response.sendRedirect(link.getUrl());
+        }else{
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+
     }
 
 }
