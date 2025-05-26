@@ -10,4 +10,6 @@ public interface LinkRepository extends JpaRepository<Link, Long> {
         Link findByUrlShort(String urlShort);
 
         List<Link> findAllByUrlCriadaEmBefore(LocalDateTime limite);
+
+        void deleteAllByUrl(String url);
 }

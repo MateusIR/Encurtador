@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class LinkController {
 
     private LinkService linkService;

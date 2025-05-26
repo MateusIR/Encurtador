@@ -12,8 +12,11 @@ public class Link {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "url", nullable = false, length = 1024)
     private String url;
+
     private String urlShort;
+
     private LocalDateTime urlCriadaEm;
 
     public Link(Long id, String url, String url_short, LocalDateTime url_criadaEm) {
