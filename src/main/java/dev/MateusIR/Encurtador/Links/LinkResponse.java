@@ -10,13 +10,15 @@ public class LinkResponse {
     private String url;
     private String url_short;
     private LocalDateTime url_criadaEm;
+    private String qrCodeBase64;
 
 
-    public LinkResponse(Long id, String url, String url_short, LocalDateTime url_criadaEm) {
+    public LinkResponse(Long id, String url, String url_short, LocalDateTime url_criadaEm, String qrCodeBase64) {
         this.id = id;
         this.url = url;
         this.url_short = url_short;
         this.url_criadaEm = url_criadaEm;
+        this.qrCodeBase64 = qrCodeBase64;
     }
     public LinkResponse(){}
 
@@ -50,5 +52,12 @@ public class LinkResponse {
 
     public void setUrl_criadaEm(LocalDateTime url_criadaEm) {
         this.url_criadaEm = url_criadaEm;
+    }
+
+    public String getQrCodeBase64() {
+        return qrCodeBase64;
+    }
+    public void setQrCodeBase64(String qrCodeBase64) {
+        this.qrCodeBase64 = qrCodeBase64;
     }
 }

@@ -30,7 +30,9 @@ public class LinkController {
 
         String geraRedirecionamentoUrl = "http://localhost:8080/r/" + link.getUrlShort();
 
-        LinkResponse response = new LinkResponse(link.getId(),link.getUrl(),geraRedirecionamentoUrl,link.getUrlCriadaEm());
+        String qrBase64 = QRCodeGenerator.generateBase64QrCode(geraRedirecionamentoUrl, 200, 200);
+
+        LinkResponse response = new LinkResponse(link.getId(),link.getUrl(),geraRedirecionamentoUrl,link.getUrlCriadaEm(),qrBase64);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
