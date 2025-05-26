@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Encurtador de Links</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      padding-top: 80px;
+      background-color: #f8f9fa;
+    }
+    .container-custom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 30px;
+      margin-top: 40px;
+    }
+    .form-section, .result-section {
+      flex: 1;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar fixed-top navbar-dark bg-dark">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">🔗 Encurtador de Links</span>
+    </div>
+  </nav>
+
+  <div class="container container-custom">
+    <div class="form-section">
+      <h4>Insira seu link</h4>
+      <form id="linkForm">
+        <div class="mb-3">
+          <label for="url" class="form-label">URL original</label>
+          <input type="url" class="form-control" id="url" required placeholder="https://exemplo.com (Até 1024 caracteres)">
+        </div>
+        <div class="mb-3">
+          <label for="urlCustom" class="form-label">URL personalizada (opcional)</label>
+          <input type="text" class="form-control" id="urlCustom" placeholder="entre 6 e 32 caracteres (sem espaço)">
+        </div>
+        <button type="submit" class="btn btn-primary">Encurtar</button>
+      </form>
+    </div>
+
+   <div class="result-section">
+  <h4>Resultado</h4>
+  
+  <div id="linkResultContainer" style="display: none;">
+    <p class="text-success fw-bold mb-2">
+      Seu link: <a id="resultLink" href="#" target="_blank"></a>
+      <button id="copyButton" class="btn btn-outline-secondary btn-sm ms-2">Copiar</button>
+      <span id="copyFeedback" class="ms-2 text-muted" style="display:none;">Link copiado!</span>
+    </p>
+  </div>
+
+  <img id="qrCodeImg" alt="QR Code do link" style="display:none; margin-top:20px;" />
+  <br>
+  <a id="downloadLink" href="#" download="qrcode.png" class="btn btn-outline-primary btn-sm mt-2" style="display:none;">📥 Baixar QR Code</a>
+    </div>
+  </div>
+  <script>
+   document.getElementById("linkForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+  const url = document.getElementById("url").value;
+  const urlCustom = document.getElementById("urlCustom").value;
+
+  const payload = { url };
+  if (urlCustom.trim()) payload.urlCustom = urlCustom;
+
+  try {
+    const response = await fetch("http://localhost:8080/encurtador", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const linkResultContainer = document.getElementById("linkResultContainer");
+    const resultLink = document.getElementById("resultLink");
+    const qrImg = document.getElementById("qrCodeImg");
+    const downloadLink = document.getElementById("downloadLink");
+    const copyButton = document.getElementById("copyButton");
+    const copyFeedback = document.getElementById("copyFeedback");
+
+    if (response.ok) {
+      const data = await response.json();
+
+      // Atualiza e exibe o link
+      resultLink.href = data.url_short;
+      resultLink.textContent = data.url_short;
+      linkResultContainer.style.display = "block";
+
+      // QR Code
+      const qrDataUrl = `data:image/png;base64,${data.qrCodeBase64}`;
+      qrImg.src = qrDataUrl;
+      qrImg.style.display = "block";
+
+      // Download
+      downloadLink.href = qrDataUrl;
+      downloadLink.style.display = "inline-block";
+
+      copyButton.style.display = "inline-block";
+      copyFeedback.style.display = "none"; 
+      copyButton.onclick = function () {
+        navigator.clipboard.writeText(data.url_short).then(() => {
+          copyFeedback.style.display = "inline";
+          setTimeout(() => {
+            copyFeedback.style.display = "none";
+          }, 2000);
+        });
+      };
+
+    } else {
+      resultLink.textContent = "Erro ao encurtar o link.";
+      linkResultContainer.style.display = "none";
+      qrImg.style.display = "none";
+      downloadLink.style.display = "none";
+    }
+  } catch (error) {
+    const resultLink = document.getElementById("resultLink");
+    resultLink.textContent = "Falha na conexão com a API.";
+  }
+});
+
+
+  </script>
+</body>
+</html>
